@@ -6,8 +6,10 @@ const contractAddress = "0x058733ecFf0EC820FeF767fa196108FF7e427E21"
 
 export default function Home() {
   const [account, setAccount] = useState(null);
-  const [constractData, setContractData] = useState()
+  const [contractData, setContractData] = useState()
   const [token_Name, setTokenName] = useState(null)
+  const [recipientAddress, setRecipientAddress] = useState("");
+  const [transferAmount, setTransferAmount] = useState(0);
 
   useEffect(() => {
     const getAccount = async () => {
@@ -57,12 +59,33 @@ export default function Home() {
 
   // get contract name
   const getContractName = async () => {
-    try{
-      const tokenName = await constractData.methods.tokenName.call()
-      console.log(tokenName)
-      setTokenName(tokenName)
+  try {
+    if (contractData) {
+      const token_Name = await contractData.methods.token_Name().call();
+      console.log(token_Name);
+      setTokenName(token_Name);
+    } else {
+      console.log("Contract data is not available yet");
+    }
+  } catch (error) {
+    console.log("Error:", error);
+  }
+};
+
+  const handleTransfer = async () => {
+    try {
+      const web3 = new Web3(window.ethereum)
+      const tokenData = new web3.eth.Contract(
+        contractAbi.abi,
+        contractAddress
+      )
+      const tx = await tokenData.methods.transfer(recipientAddress, transferAmount).send({ from: account })
+      console.log(tx)
+      const txHash = tx.transactionHash
+      const txURL = `https://sepolia.etherscan.io/tx/${txHash}`
+      console.log(txURL)
     } catch (error) {
-      console.log("our error here", error)
+      console.log("You have not place all the parameters", error);
     }
   }
 
@@ -94,6 +117,17 @@ export default function Home() {
 
           </div>
       ): null}
-    </div>
+      <br />
+      <div className="flex flex-col items-center">
+        <label>Recipient Address</label><br />
+          <input className="border border-gray-400 p-2 mb-2 rounded-lg w-64 text-red-700" type="text" placeholder="Recipient Address" value={recipientAddress} onChange={(event) => setRecipientAddress(event.target.value)}
+          />
+          <br />
+        <label>Transfer Amount</label><br />
+          <input className="border border-gray-400 p-2 mb-2 rounded-lg w-64 text-blue-500" type="number"  placeholder="Transfer Amount"  value={transferAmount} onChange={(event) => setTransferAmount(event.target.value)} />
+          <br />
+          <button onClick={handleTransfer} className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded">Transfer Tokens</button>
+  </div>
+</div>
   )
 }
