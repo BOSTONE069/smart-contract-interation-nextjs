@@ -12,7 +12,7 @@ export default function Home() {
         const accounts = await web3.eth.getAccounts()
 
         console.log("Metamask Wallets", accounts)
-         
+
         setAccount(accounts[0])
       } catch (error) {
         if (error.message === "User denied account authorizatio")
