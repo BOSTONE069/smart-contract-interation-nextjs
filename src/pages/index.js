@@ -7,7 +7,7 @@ const contractAddress = "0x058733ecFf0EC820FeF767fa196108FF7e427E21"
 export default function Home() {
   const [account, setAccount] = useState(null);
   const [constractData, setContractData] = useState()
-  const [tokenName, setTokenName] = useState(null)
+  const [token_Name, setTokenName] = useState(null)
 
   useEffect(() => {
     const getAccount = async () => {
@@ -43,10 +43,11 @@ export default function Home() {
         contractAddress
       )
       //set token name
-      // const name = await tokenData.methods.tokenName().call()
+      const balance = await tokenData.methods.balanceOf(account).call()
 
 
       console.log(tokenData)
+      console.log(balance)
 
       setContractData(tokenData)
     } catch (error){
@@ -57,7 +58,7 @@ export default function Home() {
   // get contract name
   const getContractName = async () => {
     try{
-      const tokenName = await constractData.method.tokenName.call()
+      const tokenName = await constractData.methods.tokenName.call()
       console.log(tokenName)
       setTokenName(tokenName)
     } catch (error) {
@@ -88,7 +89,7 @@ export default function Home() {
           </button>
           {/* display token name here*/}
           <h1 className="text-4xl font-bold">
-          {tokenName}
+          {token_Name}
           </h1>
 
           </div>
