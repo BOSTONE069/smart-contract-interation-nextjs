@@ -93,7 +93,8 @@ export default function Home() {
       const txHash = tx.transactionHash;
       const txURL = `https://sepolia.etherscan.io/tx/${txHash}`;
       console.log(txURL);
-      document.getElementById("tx-url").innerHTML = txURL; // update tx-url div content
+      const txURLLink = `<a href="${txURL}" target="_blank">${txURL}</a>`;
+      document.getElementById("tx-url").innerHTML = txURLLink; // update tx-url div content
     } catch (error) {
       console.log("You have not placed all the parameters", error);
     }
@@ -161,7 +162,7 @@ export default function Home() {
           Transfer Tokens
         </button>
         <br />
-        <div id="tx-url"></div>
+        <div id="tx-url" className="bg-green-500"></div>
       </div>
     </div>
   );
