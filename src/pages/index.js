@@ -11,6 +11,13 @@ export default function Home() {
   const [recipientAddress, setRecipientAddress] = useState("");
   const [transferAmount, setTransferAmount] = useState(0);
 
+  /* `useEffect` is a React hook that allows us to perform side effects in functional components. In
+  this case, the `useEffect` hook is used to get the user's account using the `getAccount` function
+  when the component mounts. The empty array `[]` as the second argument to `useEffect` ensures that
+  the effect is only run once when the component mounts. The `getAccount` function uses the `Web3`
+  library to get the user's accounts from the MetaMask wallet and sets the first account to the
+  `account` state using the `setAccount` function. If there is an error, it is caught and logged to
+  the console. */
   useEffect(() => {
     const getAccount = async () => {
       try {
@@ -72,6 +79,10 @@ export default function Home() {
   }
 };
 
+  /**
+   * The function handles a transfer of tokens using the Web3 library and logs the transaction hash and
+   * URL.
+   */
   const handleTransfer = async () => {
     try {
       const web3 = new Web3(window.ethereum)
