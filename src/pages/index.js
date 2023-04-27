@@ -82,14 +82,11 @@ export default function Home() {
     try {
       const web3 = new Web3(window.ethereum);
       const tokenData = new web3.eth.Contract(contractAbi.abi, contractAddress);
-      const transferAmountWei = web3.utils.toWei(
-        transferAmount.toString(),
-        "ether"
-      ); // convert to wei
-      const tx = await tokenData.methods
-        .transfer(recipientAddress, transferAmountWei)
-        .send({ from: account });
+      const transferAmountWei = web3.utils.toWei(transferAmount.toString(),"ether"); // convert to wei
+
+      const tx = await tokenData.methods.transfer(recipientAddress, transferAmountWei).send({ from: account });
       console.log(tx);
+
       const txHash = tx.transactionHash;
       const txURL = `https://sepolia.etherscan.io/tx/${txHash}`;
       console.log(txURL);
